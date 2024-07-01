@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Web App with Burger Menu and Landing Page</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="navbar">
+      <div class="burger-menu" onclick="toggleMenu()">&#9776;</div>
+      <div class="menu" id="menu">
+        <a
+          href="#"
+          onclick="loadPage('https://docs.google.com/spreadsheets/d/e/2PACX-1vSqVUvmu0HI8EueBdoFhh0cc9DfE-BtrxSjB5DD3PIre_PakDmeb4lrfRPM1ldb5sXnmaeSHv2pD-sj/pubhtml?gid=0&single=true')"
+          >HAACP Dashboard</a
+        >
+        <a
+          href="#"
+          onclick="loadPage('https://docs.google.com/forms/d/1wTNplSkM9rVHXiXtej0GonFYaxiXvCyqfwPr1hUNgSs/viewform?edit_requested=true')"
+          >SC2 Refrigeration</a
+        >
+        <a
+          href="#"
+          onclick="loadPage('https://docs.google.com/forms/d/e/1FAIpQLScJNjXfi8nfqFmdF2ibMbHSKy02VrqRl-B1UR4Nwa1Aq9iaWQ/viewform?usp=sf_link')"
+          >SC9 Deliveries</a
+        >
+        <div class="submenu" onclick="toggleSubmenu(this)">
+          <a href="#" class="has-submenu">Cleaning</a>
+          <div class="submenu-content">
+            <a
+              href="#"
+              onclick="loadPage('https://docs.google.com/forms/d/e/1FAIpQLSf6GpEjxLwCPyQp892zjH-_oBSnIGHYXPKWiJVFXvSn7dwINg/viewform?usp=sf_link')"
+              >Daily Cleaning</a
+            >
+            <a
+              href="#"
+              onclick="loadPage('https://docs.google.com/forms/d/e/1FAIpQLSdliECsZBiVDk3ScwnwXnjOM1uJC_Csn-NZnQatNXGyLt0oyQ/viewform?usp=sf_link')"
+              >Weekly/Monthly Cleaning</a
+            >
+          </div>
+        </div>
+        <a
+          href="#"
+          onclick="loadPage('https://docs.google.com/forms/d/e/1FAIpQLSfm9jxRpO6ejyi727Tq0qnpUmOA032CJkKJwmDDZY6S-A2W_w/viewform?usp=sf_link')"
+          >SC3 Cooking / Cooling</a
+        >
+        <a
+          href="#"
+          class="special-button"
+          onclick="loadPage('https://docs.google.com/forms/d/e/1FAIpQLScgkUsQ-JA8dGW2JoYQf3PrkbxthyW2uMiSocwYg-EKYHUEzQ/viewform')"
+          >Sign In / Out</a
+        >
+      </div>
+      <img src="path/to/logo.png" alt="Logo" class="logo" />
+    </div>
+    <div id="landingPage">
+      <div class="icon-container">
+        <a
+          href="#"
+          onclick="loadPage('https://docs.google.com/spreadsheets/d/e/2PACX-1vSqVUvmu0HI8EueBdoFhh0cc9DfE-BtrxSjB5DD3PIre_PakDmeb4lrfRPM1ldb5sXnmaeSHv2pD-sj/pubhtml?gid=0&single=true')">
+          <img src="https://via.placeholder.com/150" alt="HAACP Dashboard Icon" />
+          <p>HAACP Dashboard</p>
+        </a>
+      </div>
+      <div class="icon-container">
+        <a
+          href="#"
+          onclick="loadPage('https://docs.google.com/forms/d/e/1FAIpQLScgkUsQ-JA8dGW2JoYQf3PrkbxthyW2uMiSocwYg-EKYHUEzQ/viewform?usp=sf_link')">
+          <img src="https://via.placeholder.com/150" alt="Sign In / Out Icon" />
+          <p>Sign In / Out</p>
+        </a>
+      </div>
+    </div>
+    <iframe id="contentFrame" src="" frameborder="0"></iframe>
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,169 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.navbar {
+  background-color: #001f3f; /* Navy blue background for the navbar */
+  color: white;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.burger-menu {
+  cursor: pointer;
+  font-size: 24px;
+  display: block;
+}
+
+.menu {
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  position: absolute;
+  top: 60px;
+  left: 0;
+  right: 0;
+  background-color: #001f3f; /* Navy blue background for the menu */
+  padding: 10px;
+  border-radius: 5px;
+  z-index: 1;
+}
+
+.menu a {
+  color: white;
+  text-decoration: none;
+  padding: 10px;
+  background-color: #003366; /* Darker navy blue for menu items */
+  border-radius: 5px;
+  text-align: center;
+  display: block;
+}
+
+.menu a:hover {
+  background-color: #004080; /* Slightly lighter navy blue for hover effect */
+}
+
+.special-button {
+  background-color: red !important;
+  color: white !important;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.logo {
+  height: 40px; /* Adjust the height as needed */
+  margin-left: auto; /* Ensure the logo is pushed to the right */
+}
+
+#landingPage {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  padding: 20px;
+  gap: 20px;
+}
+
+.icon-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+}
+
+.icon-container img {
+  width: 100px; /* Adjust size as needed */
+  height: 100px; /* Adjust size as needed */
+  margin-bottom: 10px;
+}
+
+.icon-container p {
+  margin: 0;
+  color: #001f3f; /* Navy blue text color */
+  font-weight: bold;
+}
+
+.submenu {
+  position: relative;
+  display: inline-block;
+}
+
+.submenu .submenu-content {
+  display: none;
+  position: absolute;
+  background-color: #003366; /* Darker navy blue for submenu */
+  min-width: 160px;
+  z-index: 1;
+  border-radius: 5px;
+}
+
+.submenu .submenu-content a {
+  color: white;
+  padding: 10px;
+  text-decoration: none;
+  display: block;
+  text-align: center;
+}
+
+.submenu:hover .submenu-content {
+  display: block;
+}
+
+iframe {
+  flex: 1;
+  width: 100%;
+  border: none;
+  display: none; /* Hide the iframe initially */
+}
+
+@media (min-width: 600px) {
+  .burger-menu {
+    display: none;
+  }
+
+  .menu {
+    display: flex !important;
+    flex-direction: row;
+    gap: 10px;
+    position: static;
+    background-color: transparent;
+    padding: 0;
+  }
+
+  .menu a {
+    padding: 10px 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .icon-container {
+    position: relative;
+  }
+
+  .submenu-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - 40px); /* Adjust the width as needed */
+    background-color: #f9f9f9;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+  }
+
+  .submenu-content.show-submenu {
+    display: block;
+  }
+}
