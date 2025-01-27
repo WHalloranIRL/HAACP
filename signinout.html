@@ -1,191 +1,162 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign In/Out</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.15.0/dist/umd/supabase.js"></script>
     <style>
-      /* Basic form styling */
-      body {
-        font-family: Arial, sans-serif;
-        padding: 20px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        background-color: #f4f4f4;
-      }
+        /* Basic form styling */
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
 
-      .form-container {
-        background-color: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        width: 100%;
-        max-width: 400px;
-      }
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
 
-      h1 {
-        text-align: center;
-      }
+        h1 {
+            text-align: center;
+        }
 
-      .input-group {
-        margin-bottom: 15px;
-      }
+        .input-group {
+            margin-bottom: 15px;
+        }
 
-      label {
-        font-size: 16px;
-      }
+        label {
+            font-size: 16px;
+        }
 
-      input[type="number"],
-      input[type="radio"] {
-        width: 100%;
-        padding: 10px;
-        margin: 5px 0;
-        border-radius: 4px;
-        border: 1px solid #ddd;
-      }
+        input[type="number"], input[type="radio"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
 
-      .action-buttons {
-        display: flex;
-        justify-content: space-between;
-      }
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+        }
 
-      .action-button {
-        padding: 15px;
-        font-size: 16px;
-        width: 48%;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        color: white;
-      }
+        .action-button {
+            padding: 15px;
+            font-size: 16px;
+            width: 48%;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            color: white;
+        }
 
-      .sign-in {
-        background-color: green;
-      }
+        .sign-in {
+            background-color: green;
+        }
 
-      .sign-out {
-        background-color: red;
-      }
+        .sign-out {
+            background-color: red;
+        }
 
-      button[type="submit"] {
-        width: 100%;
-        padding: 10px;
-        font-size: 18px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        margin-top: 20px;
-      }
-
-      button[type="submit"]:hover {
-        background-color: #0056b3;
-      }
-
-      #responseMessage {
-        text-align: center;
-        margin-top: 10px;
-        font-size: 16px;
-      }
+        #responseMessage {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 16px;
+        }
     </style>
-  </head>
-  <body>
+</head>
+<body>
     <div class="form-container">
-      <h1>Sign In or Sign Out</h1>
-      <form id="signinoutForm">
-        <!-- Login ID (numeric only) -->
-        <div class="input-group">
-          <label for="login_id">Login ID (Number):</label>
-          <input type="number" id="login_id" name="login_id" required /><br /><br />
-        </div>
+        <h1>Sign In or Sign Out</h1>
+        <form id="signinoutForm">
+            <!-- Login ID (numeric only) -->
+            <div class="input-group">
+                <label for="login_id">Login ID (Number):</label>
+                <input type="number" id="login_id" name="login_id" required><br><br>
+            </div>
 
-        <!-- Confirm Data (Yes or No) -->
-        <div class="input-group">
-          <label>Is the data correct?</label><br />
-          <input type="radio" id="yes" name="confirm_data" value="true" required />
-          <label for="yes">Yes</label>
-          <input type="radio" id="no" name="confirm_data" value="false" required />
-          <label for="no">No</label><br /><br />
-        </div>
+            <!-- Confirm Data (Yes only) -->
+            <div class="input-group">
+                <label>Is the data correct?</label><br>
+                <input type="radio" id="yes" name="confirm_data" value="true" required>
+                <label for="yes">Yes</label><br><br>
+            </div>
 
-        <!-- Action Buttons (Sign In / Sign Out) -->
-        <div class="action-buttons">
-          <button type="button" class="action-button sign-in" id="signInButton">Sign In</button>
-          <button type="button" class="action-button sign-out" id="signOutButton">Sign Out</button>
-        </div>
-
-        <button type="submit">Submit</button>
-      </form>
-      <p id="responseMessage"></p>
+            <!-- Action Buttons (Sign In / Sign Out) -->
+            <div class="action-buttons">
+                <button type="button" class="action-button sign-in" id="signInButton">Sign In</button>
+                <button type="button" class="action-button sign-out" id="signOutButton">Sign Out</button>
+            </div>
+        </form>
+        <p id="responseMessage"></p>
     </div>
 
     <script>
-      // Initialize Supabase
-      const supabaseUrl = "https://tmcepkpnovltdqvmtulr.supabase.co"; // Replace with your Supabase URL
-      const supabaseKey =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRtY2Vwa3Bub3ZsdGRxdm10dWxyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzc5OTg4MTQsImV4cCI6MjA1MzU3NDgxNH0.9DAj1Ayb0h1htsWKt3_NLFdInqIF0sj_7X4A2f06x5k"; // Replace with your Supabase anon key
-      const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+        // Initialize Supabase
+        const supabaseUrl = 'https://tmcepkpnovltdqvmtulr.supabase.co';  // Your Supabase URL
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRtY2Vwa3Bub3ZsdGRxdm10dWxyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzc5OTg4MTQsImV4cCI6MjA1MzU3NDgxNH0.9DAj1Ayb0h1htsWKt3_NLFdInqIF0sj_7X4A2f06x5k';  // Your Supabase anon key
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-      // Initialize action variable
-      let action = "";
+        // Event listeners for Sign In/Sign Out buttons
+        document.getElementById('signInButton').addEventListener('click', async () => {
+            const action = 'sign-in';  // Set action to 'sign-in'
+            await handleFormSubmit(action);
+        });
 
-      // Event listeners for Sign In/Sign Out buttons
-      document.getElementById("signInButton").addEventListener("click", () => {
-        action = "sign-in"; // Set action to 'sign-in'
-      });
+        document.getElementById('signOutButton').addEventListener('click', async () => {
+            const action = 'sign-out';  // Set action to 'sign-out'
+            await handleFormSubmit(action);
+        });
 
-      document.getElementById("signOutButton").addEventListener("click", () => {
-        action = "sign-out"; // Set action to 'sign-out'
-      });
+        // Handle form submission when a button is clicked
+        async function handleFormSubmit(action) {
+            // Get form data
+            const login_id = document.getElementById('login_id').value;
+            const confirm_data = document.querySelector('input[name="confirm_data"]:checked').value === 'true';  // Convert to boolean
 
-      // Handle form submission
-      const form = document.getElementById("signinoutForm");
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
+            // Ensure the data is correct
+            if (!login_id || !confirm_data) {
+                document.getElementById('responseMessage').textContent = 'Please enter a Login ID and confirm the data.';
+                return;
+            }
 
-        // Get form data
-        const login_id = document.getElementById("login_id").value;
-        const confirm_data =
-          document.querySelector('input[name="confirm_data"]:checked').value === "true"; // Convert to boolean
+            // Insert data into Supabase
+            const { data, error } = await supabase
+                .from('signins')  // Make sure this matches your table name
+                .insert([
+                    {
+                        login_id: login_id,
+                        action: action,
+                        confirm_data: confirm_data,
+                        timestamp: new Date()
+                    }
+                ]);
 
-        // Ensure the action is selected
-        if (!action) {
-          document.getElementById("responseMessage").textContent =
-            "Please select Sign In or Sign Out.";
-          return;
+            // Display response message
+            const responseMessage = document.getElementById('responseMessage');
+            if (error) {
+                responseMessage.textContent = `Error: ${error.message}`;
+                responseMessage.style.color = 'red';
+            } else {
+                responseMessage.textContent = 'Form submitted successfully!';
+                responseMessage.style.color = 'green';
+            }
+
+            // Clear form after submission
+            document.getElementById('signinoutForm').reset();
         }
-
-        // Insert data into Supabase
-        const {data, error} = await supabase
-          .from("signins") // Make sure this matches your table name
-          .insert([
-            {
-              login_id: login_id,
-              action: action,
-              confirm_data: confirm_data,
-              timestamp: new Date(),
-            },
-          ]);
-
-        // Display response message
-        const responseMessage = document.getElementById("responseMessage");
-        if (error) {
-          responseMessage.textContent = `Error: ${error.message}`;
-          responseMessage.style.color = "red";
-        } else {
-          responseMessage.textContent = "Form submitted successfully!";
-          responseMessage.style.color = "green";
-        }
-
-        // Clear form after submission
-        form.reset();
-        action = ""; // Reset action
-      });
     </script>
-  </body>
+</body>
 </html>
