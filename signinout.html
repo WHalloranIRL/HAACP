@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign In/Out Form</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin-top: 50px;
+      }
+      input,
+      button {
+        margin: 10px;
+      }
+      .button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+      }
+      .sign-in {
+        background-color: green;
+        color: white;
+      }
+      .sign-out {
+        background-color: red;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Sign In/Out Form</h1>
+    <form id="signForm">
+      <label for="id">Enter ID:</label><br />
+      <input type="text" id="id" name="id" pattern="\d*" required /><br /><br />
+      <input type="checkbox" id="confirm" name="confirm" value="Confirm" />
+      <label for="confirm"> Confirm</label><br /><br />
+      <button type="button" class="button sign-in" onclick="submitForm('Sign In')">Sign In</button>
+      <button type="button" class="button sign-out" onclick="submitForm('Sign Out')">
+        Sign Out
+      </button>
+    </form>
+
+    <script>
+      const SHEET_ID = "1EplSE20-g6NIg-XpH4tPf3m1oJ5zrmg9z5L2p23tjWU"; // Your Sheet ID
+      const API_KEY = "AIzaSyBCBm3FqS8QA-j6o5VebWGOgF1xSRykKFE"; // Your API Key
+      const SHEET_NAME = "Sheet1"; // Ensure this matches your tab name in the spreadsheet
+
+      function submitForm(action) {
+        const id = document.getElementById("id").value;
+        const confirm = document.getElementById("confirm").checked ? "Confirm" : "Not Confirmed";
+
+        if (!id) {
+          alert("Please enter a valid ID.");
+          return;
+        }
+
+        const date = new Date().toLocaleString(); // Format: MM/DD/YYYY, HH:MM:SS
+        const data = [
+          [date, id, action, confirm], // Data row to append
+        ];
+
+        // Construct the API request URL
+        const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}:append?valueInputOption=USER_ENTERED&key=${API_KEY}`;
+
+        fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            range: `${SHEET_NAME}`,
+            majorDimension: "ROWS",
+            values: data,
+          }),
+        })
+          .then((response) => response.json())
+          .then((result) => {
+            if (result.updates) {
+              alert("Form submitted successfully!");
+            } else {
+              console.error("Error response:", result);
+              alert("There was an error submitting the form.");
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            alert("There was an error submitting the form.");
+          });
+      }
+    </script>
+  </body>
+</html>
