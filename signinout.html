@@ -3,94 +3,117 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sign In/Out Form</title>
+    <title>Sign In/Out</title>
+    <!-- Link to your CSS file -->
+    <link rel="stylesheet" href="style.css" />
+    <!-- Supabase Client JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.15.0/dist/umd/supabase.js"></script>
     <style>
-      body {
-        font-family: Arial, sans-serif;
-        text-align: center;
-        margin-top: 50px;
+      /* Button Styling */
+      .action-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
       }
-      input,
-      button {
-        margin: 10px;
-      }
-      .button {
-        padding: 10px 20px;
-        font-size: 16px;
-        cursor: pointer;
+      .action-button {
+        padding: 20px 40px;
+        font-size: 18px;
+        color: white;
         border: none;
-        border-radius: 5px;
+        cursor: pointer;
+        border-radius: 8px;
+        width: 150px;
       }
       .sign-in {
         background-color: green;
-        color: white;
       }
       .sign-out {
         background-color: red;
-        color: white;
       }
     </style>
   </head>
   <body>
-    <h1>Sign In/Out Form</h1>
-    <form id="signForm">
-      <label for="id">Enter ID:</label><br />
-      <input type="text" id="id" name="id" pattern="\d*" required /><br /><br />
-      <input type="checkbox" id="confirm" name="confirm" value="Confirm" />
-      <label for="confirm"> Confirm</label><br /><br />
-      <button type="button" class="button sign-in" onclick="submitForm('Sign In')">Sign In</button>
-      <button type="button" class="button sign-out" onclick="submitForm('Sign Out')">
-        Sign Out
-      </button>
-    </form>
+    <div class="form-container">
+      <h1>Sign In or Sign Out</h1>
+      <form id="signinoutForm">
+        <!-- Login ID (numeric only) -->
+        <label for="login_id">Login ID (Number):</label>
+        <input type="number" id="login_id" name="login_id" required /><br /><br />
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+          <button type="button" class="action-button sign-in" id="signInButton">Sign In</button>
+          <button type="button" class="action-button sign-out" id="signOutButton">Sign Out</button>
+        </div>
+        <br /><br />
+
+        <!-- Confirm Data (Yes or No) -->
+        <label for="confirm_data">Is the data correct?</label><br />
+        <input type="radio" id="yes" name="confirm_data" value="true" required />
+        <label for="yes">Yes</label>
+        <input type="radio" id="no" name="confirm_data" value="false" required />
+        <label for="no">No</label><br /><br />
+
+        <button type="submit">Submit</button>
+      </form>
+      <p id="responseMessage"></p>
+    </div>
 
     <script>
-      const SHEET_ID = "1EplSE20-g6NIg-XpH4tPf3m1oJ5zrmg9z5L2p23tjWU"; // Your Sheet ID
-      const API_KEY = "AIzaSyBCBm3FqS8QA-j6o5VebWGOgF1xSRykKFE"; // Your API Key
-      const SHEET_NAME = "Sheet1"; // Ensure this matches your tab name in the spreadsheet
+      // Initialize Supabase
+      const supabaseUrl = "YOUR_SUPABASE_URL"; // Replace with your Supabase URL
+      const supabaseKey = "YOUR_SUPABASE_ANON_KEY"; // Replace with your Supabase anon key
+      const supabase = supabase.createClient(supabaseUrl, supabaseKey);
 
-      function submitForm(action) {
-        const id = document.getElementById("id").value;
-        const confirm = document.getElementById("confirm").checked ? "Confirm" : "Not Confirmed";
+      // Form submission event listener
+      const form = document.getElementById("signinoutForm");
+      let action = ""; // Variable to store action ('sign-in' or 'sign-out')
 
-        if (!id) {
-          alert("Please enter a valid ID.");
+      // Event listeners for Sign In/Sign Out buttons
+      document.getElementById("signInButton").addEventListener("click", () => {
+        action = "sign-in"; // Set action to 'sign-in'
+      });
+
+      document.getElementById("signOutButton").addEventListener("click", () => {
+        action = "sign-out"; // Set action to 'sign-out'
+      });
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        // Get form data
+        const login_id = document.getElementById("login_id").value;
+        const confirm_data =
+          document.querySelector('input[name="confirm_data"]:checked').value === "true"; // Convert to boolean
+
+        // Ensure the action is selected before submitting
+        if (!action) {
+          document.getElementById("responseMessage").textContent =
+            "Please select Sign In or Sign Out.";
           return;
         }
 
-        const date = new Date().toLocaleString(); // Format: MM/DD/YYYY, HH:MM:SS
-        const data = [
-          [date, id, action, confirm], // Data row to append
-        ];
+        // Insert data into Supabase
+        const {data, error} = await supabase
+          .from("signins") // Make sure this matches your table name
+          .insert([
+            {login_id: login_id, action: action, confirm_data: confirm_data, timestamp: new Date()},
+          ]);
 
-        // Construct the API request URL
-        const url = `https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}:append?valueInputOption=USER_ENTERED&key=${API_KEY}`;
+        // Handle response
+        const responseMessage = document.getElementById("responseMessage");
+        if (error) {
+          responseMessage.textContent = `Error: ${error.message}`;
+          responseMessage.style.color = "red";
+        } else {
+          responseMessage.textContent = "Form submitted successfully!";
+          responseMessage.style.color = "green";
+        }
 
-        fetch(url, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            range: `${SHEET_NAME}`,
-            majorDimension: "ROWS",
-            values: data,
-          }),
-        })
-          .then((response) => response.json())
-          .then((result) => {
-            if (result.updates) {
-              alert("Form submitted successfully!");
-            } else {
-              console.error("Error response:", result);
-              alert("There was an error submitting the form.");
-            }
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-            alert("There was an error submitting the form.");
-          });
-      }
+        // Clear form
+        form.reset();
+        action = ""; // Reset action after form submission
+      });
     </script>
   </body>
 </html>
